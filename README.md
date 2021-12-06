@@ -1,6 +1,8 @@
 # Slice
 A simple package that makes working with slices a little bit easier with the help of generics.
 
+## Install
+`go get github.com/twharmon/slice`
 
 ## Example
 ```go

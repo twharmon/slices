@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	s := slice.New("foo", "ba")
+    s := slice.New("foo", "ba")
     s.Push("b")
     s.Sort(func(a, b string) bool {
         // sort by string length, ascending

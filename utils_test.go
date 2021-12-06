@@ -1,8 +1,9 @@
 package slice_test
 
 import (
-	"slice"
 	"testing"
+
+	"github.com/twharmon/slice"
 )
 
 func TestMap(t *testing.T) {

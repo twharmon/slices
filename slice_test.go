@@ -1,10 +1,11 @@
 package slice_test
 
 import (
-	"slice"
 	"sort"
 	"strings"
 	"testing"
+
+	"github.com/twharmon/slice"
 )
 
 func TestLen(t *testing.T) {
@@ -230,56 +231,58 @@ func TestFmt(t *testing.T) {
 	}
 }
 
-func BenchmarkStdShortSort(b *testing.B) {
+func shortSlice() []string {
+	return []string{"foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon", "mu", "nu"}
+}
+
+func BenchmarkStdLibSort(b *testing.B) {
+	s := shortSlice()
 	for i := 0; i < b.N; i++ {
-		s := []string{"foo", "bar", "baz"}
 		sort.Slice(s, func(i, j int) bool {
 			return s[i] < s[j]
+		})
+		sort.Slice(s, func(i, j int) bool {
+			return len(s[i]) < len(s[j])
 		})
 	}
 }
 
 func BenchmarkSortShort(b *testing.B) {
+	s := slice.New(shortSlice()...)
 	for i := 0; i < b.N; i++ {
-		s := slice.New("foo", "bar", "baz")
 		s.Sort(func(a string, b string) bool {
 			return a < b
 		})
-	}
-}
-
-func BenchmarkStdSort(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		s := []string{"foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon"}
-		sort.Slice(s, func(i, j int) bool {
-			return s[i] < s[j]
-		})
-	}
-}
-
-func BenchmarkSort(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		s := slice.New("foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon")
 		s.Sort(func(a string, b string) bool {
-			return a < b
+			return len(a) < len(b)
 		})
 	}
 }
 
-func BenchmarkStdSortLong(b *testing.B) {
+func longSlice() []string {
+	return []string{"foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon", "mu", "nu", "lambda", "upsilon", "zeta", "eta", "rho", "psi", "iota", "apple", "banana", "pomegranite", "orange", "kiwi", "carrot", "brocoli", "dog", "cat", "leopard", "bull", "pig", "zebra", "hippo", "rhinocerous", "deer", "elk", "moose", "duck", "rabbit", "snake", "sloth", "aardvark", "monkey", "armadillo", "gorilla", "chimapnzee", "ape", "bird"}
+}
+
+func BenchmarkStdLibSortLong(b *testing.B) {
+	s := longSlice()
 	for i := 0; i < b.N; i++ {
-		s := []string{"foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon", "mu", "nu", "lambda", "upsilon", "zeta", "eta", "rho", "psi", "iota", "apple", "banana", "pomegranite", "orange", "kiwi", "carrot", "brocoli", "dog", "cat", "leopard", "bull", "pig", "zebra", "hippo", "rhinocerous", "deer", "elk", "moose", "duck", "rabbit", "snake", "sloth", "aardvark", "monkey", "armadillo", "gorilla", "chimapnzee", "ape", "bird"}
 		sort.Slice(s, func(i, j int) bool {
 			return s[i] < s[j]
+		})
+		sort.Slice(s, func(i, j int) bool {
+			return len(s[i]) < len(s[j])
 		})
 	}
 }
 
 func BenchmarkSortLong(b *testing.B) {
+	s := slice.New(longSlice()...)
 	for i := 0; i < b.N; i++ {
-		s := slice.New("foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon", "mu", "nu", "lambda", "upsilon", "zeta", "eta", "rho", "psi", "iota", "apple", "banana", "pomegranite", "orange", "kiwi", "carrot", "brocoli", "dog", "cat", "leopard", "bull", "pig", "zebra", "hippo", "rhinocerous", "deer", "elk", "moose", "duck", "rabbit", "snake", "sloth", "aardvark", "monkey", "armadillo", "gorilla", "chimapnzee", "ape", "bird")
 		s.Sort(func(a string, b string) bool {
 			return a < b
+		})
+		s.Sort(func(a string, b string) bool {
+			return len(a) < len(b)
 		})
 	}
 }

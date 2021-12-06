@@ -34,12 +34,10 @@ func main() {
 
 ## Benchmarks
 ```
-BenchmarkStdShortSort-4   	 5534931	       209.7 ns/op	     104 B/op	       3 allocs/op
-BenchmarkSortShort-4      	34339386	        36.95 ns/op	       0 B/op	       0 allocs/op
-BenchmarkStdSort-4        	 2434693	       524.5 ns/op	     264 B/op	       3 allocs/op
-BenchmarkSort-4           	 2980101	       402.2 ns/op	       0 B/op	       0 allocs/op
-BenchmarkStdSortLong-4    	  343713	      3362 ns/op	     952 B/op	       3 allocs/op
-BenchmarkSortLong-4       	  398869	      3259 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStdLibShortSort-10    	 1831299	       653.5 ns/op	     112 B/op	       4 allocs/op
+BenchmarkSortShort-10       	 1634320	       732.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStdLibSortLong-10     	  366229	      3261 ns/op	     112 B/op	       4 allocs/op
+BenchmarkSortLong-10        	  292084	      4097 ns/op	       0 B/op	       0 allocs/op
 ```
 
 ## Contribute

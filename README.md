@@ -23,12 +23,12 @@ func main() {
     })
     fmt.Println(s) // [b ba foo]
 
-    i := slice.New(-33, 4, 2, -8)
+    i := slice.New(-3, 4, 2, -8)
     i.Sort(func(a, b int) bool {
         // sort by asbolute value, ascending
         return a*a < b*b
     })
-    fmt.Println(i) // [2, -33, 4, -8]
+    fmt.Println(i) // [2, -3, 4, -8]
 }
 ```
 

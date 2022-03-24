@@ -21,15 +21,15 @@ import (
 
 func main() {
     s := []string{"foo", "ba"}
-    s = s.Push("b")
-    s.SortFunc(s, func(a, b string) bool {
+    s = slices.Push(s, "b")
+    s = slices.SortFunc(s, func(a, b string) bool {
         // sort by string length, ascending
         return len(a) < len(b)
     })
     fmt.Println(s) // [b ba foo]
 
     i := []int{-3, 4, 2, -8}
-    i = i.SortFunc(i, func(a, b int) bool {
+    i = slices.SortFunc(i, func(a, b int) bool {
         // sort by asbolute value, ascending
         return a*a < b*b
     })

@@ -113,6 +113,20 @@ func TestSomeFalse(t *testing.T) {
 	}
 }
 
+func TestContainsTrue(t *testing.T) {
+	s := []string{"foo", "bar", "baz"}
+	if !slices.Contains(s, "bar") {
+		t.Fatalf("contains was false; expected true")
+	}
+}
+
+func TestContainsFalse(t *testing.T) {
+	s := []string{"foo", "bar", "baz"}
+	if slices.Contains(s, "x") {
+		t.Fatalf("contains was true; expected false")
+	}
+}
+
 func TestEveryFalse(t *testing.T) {
 	s := []string{"foo", "bar", "baz"}
 	if slices.Every(s, func(s string) bool { return len(s) < 2 }) {

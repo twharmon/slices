@@ -18,6 +18,24 @@ func TestPush(t *testing.T) {
 	}
 }
 
+func TestContainsTrue(t *testing.T) {
+	s := []int{1, 2, 3}
+	got := slices.Contains(s, 2)
+	want := true
+	if !reflect.DeepEqual(want, got) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestContainsFalse(t *testing.T) {
+	s := []int{1, 2, 3}
+	got := slices.Contains(s, 4)
+	want := false
+	if !reflect.DeepEqual(want, got) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
 func TestSpliceNoInserts(t *testing.T) {
 	s := []string{"foo", "bar", "baz"}
 	got := slices.Splice(s, 1, 1)
@@ -65,12 +83,9 @@ func TestUnshift(t *testing.T) {
 
 func TestFindFound(t *testing.T) {
 	s := []string{"foo"}
-	found, ok := slices.Find(s, func(item string) bool {
+	found := slices.Find(s, func(item string) bool {
 		return item == "foo"
 	})
-	if !ok {
-		t.Fatalf("not found")
-	}
 	if found != "foo" {
 		t.Fatalf("wrong find %s", found)
 	}
@@ -78,12 +93,9 @@ func TestFindFound(t *testing.T) {
 
 func TestFindNotFound(t *testing.T) {
 	s := []string{"foo"}
-	found, ok := slices.Find(s, func(item string) bool {
+	found := slices.Find(s, func(item string) bool {
 		return item == "bar"
 	})
-	if ok {
-		t.Fatalf("found")
-	}
 	if found != "" {
 		t.Fatalf("wrong find %s", found)
 	}
@@ -99,6 +111,77 @@ func TestFilter(t *testing.T) {
 	}
 }
 
+func TestMaxZeroValue(t *testing.T) {
+	s := []string{}
+	got := slices.Max(s)
+	want := ""
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+func TestMinZeroValue(t *testing.T) {
+	s := []string{}
+	got := slices.Min(s)
+	want := ""
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestMax(t *testing.T) {
+	s := []int{2, 6, 1, 4, 3}
+	got := slices.Max(s)
+	want := 6
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestMin(t *testing.T) {
+	s := []int{2, 6, 1, 4, 3}
+	got := slices.Min(s)
+	want := 1
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestMaxFuncZeroValue(t *testing.T) {
+	s := []int{}
+	got := slices.MaxFunc(s, func(a, b int) bool { return a < b })
+	want := 0
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestMinFuncZeroValue(t *testing.T) {
+	s := []int{}
+	got := slices.MinFunc(s, func(a, b int) bool { return a < b })
+	want := 0
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestMaxFunc(t *testing.T) {
+	s := []int{2, 6, 1, 4, 3}
+	got := slices.MaxFunc(s, func(a, b int) bool { return a < b })
+	want := 6
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestMinFunc(t *testing.T) {
+	s := []int{2, 6, 1, 4, 3}
+	got := slices.MinFunc(s, func(a, b int) bool { return a < b })
+	want := 1
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
 func TestSomeTrue(t *testing.T) {
 	s := []string{"foo", "bar", "baz"}
 	if !slices.Some(s, func(s string) bool { return s == "bar" }) {
@@ -110,20 +193,6 @@ func TestSomeFalse(t *testing.T) {
 	s := []string{"foo", "bar", "baz"}
 	if slices.Some(s, func(s string) bool { return s == "x" }) {
 		t.Fatalf("some was true; expected false")
-	}
-}
-
-func TestContainsTrue(t *testing.T) {
-	s := []string{"foo", "bar", "baz"}
-	if !slices.Contains(s, "bar") {
-		t.Fatalf("contains was false; expected true")
-	}
-}
-
-func TestContainsFalse(t *testing.T) {
-	s := []string{"foo", "bar", "baz"}
-	if slices.Contains(s, "x") {
-		t.Fatalf("contains was true; expected false")
 	}
 }
 

@@ -35,7 +35,7 @@ func insertionSort[T Ordered](s []T, a, b int) {
 	}
 }
 
-func partitionFunc[T any](s []T, low, high int, less func(a T, b T) bool) int {
+func partitionFunc[T any](s []T, low, high int, less func(T, T) bool) int {
 	for j := low; j < high; j++ {
 		if less(s[j], s[high]) {
 			s[low], s[j] = s[j], s[low]
@@ -46,7 +46,7 @@ func partitionFunc[T any](s []T, low, high int, less func(a T, b T) bool) int {
 	return low
 }
 
-func quickSortFunc[T any](s []T, low, high int, less func(a T, b T) bool) {
+func quickSortFunc[T any](s []T, low, high int, less func(T, T) bool) {
 	if low < high {
 		if high-low < 12 {
 			insertionSortFunc(s, low, high, less)
@@ -58,7 +58,7 @@ func quickSortFunc[T any](s []T, low, high int, less func(a T, b T) bool) {
 	}
 }
 
-func insertionSortFunc[T any](s []T, a, b int, less func(a T, b T) bool) {
+func insertionSortFunc[T any](s []T, a, b int, less func(T, T) bool) {
 	for i := 1; i < b-a+1; i++ {
 		j := i
 		for j > 0 {

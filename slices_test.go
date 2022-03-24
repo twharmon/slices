@@ -231,7 +231,7 @@ func TestReduce(t *testing.T) {
 	}
 }
 
-var unsorted = []string{"foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon", "mu", "nu", "lambda", "upsilon", "zeta", "eta", "rho", "psi", "iota", "apple", "banana", "pomegranite", "orange", "kiwi", "carrot", "brocoli"}
+var unsorted = []string{"foo", "bar", "baz", "lorem", "ipsum", "donor", "sit", "alpha", "beta", "delta", "gamma", "omega", "epsilon", "mu", "nu", "lambda", "upsilon", "zeta", "eta", "rho", "psi", "iota", "apple", "banana", "pomegranate", "orange", "kiwi", "carrot", "broccoli"}
 
 func TestSortFunc(t *testing.T) {
 	s := slices.Clone(unsorted)

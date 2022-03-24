@@ -1,5 +1,5 @@
 # Slices
-Pure functions for slices.
+Pure functions for slices. Slices are never operated on "in place" but new ones are always returned.
 
 ![](https://github.com/twharmon/slices/workflows/Test/badge.svg) [![](https://goreportcard.com/badge/github.com/twharmon/slices)](https://goreportcard.com/report/github.com/twharmon/slices) [![](https://gocover.io/_badge/github.com/twharmon/slices)](https://gocover.io/github.com/twharmon/slices)
 
@@ -9,31 +9,46 @@ For full documentation see [pkg.go.dev](https://pkg.go.dev/github.com/twharmon/s
 ## Install
 `go get github.com/twharmon/slices`
 
-## Example
+## Usage
 ```go
 package main
 
 import (
 	"fmt"
-	
+
 	"github.com/twharmon/slices"
 )
 
 func main() {
-    s := []string{"foo", "ba"}
-    s = slices.Push(s, "b")
-    s = slices.SortFunc(s, func(a, b string) bool {
-        // sort by string length, ascending
-        return len(a) < len(b)
-    })
-    fmt.Println(s) // [b ba foo]
+	// use plain go slices
+	s := []string{"foo", "ba"}
 
-    i := []int{-3, 4, 2, -8}
-    i = slices.SortFunc(i, func(a, b int) bool {
-        // sort by asbolute value, ascending
-        return a*a < b*b
-    })
-    fmt.Println(i) // [2, -3, 4, -8]
+	// push new item to end of slice
+	s = slices.Push(s, "b")
+	fmt.Println(s) // [foo ba b]
+
+	
+	// sort by string length, ascending
+	sorted := slices.SortFunc(s, func(a, b string) bool {
+		return len(a) < len(b)
+	})
+    // original slice is not chaged
+	fmt.Println(s, sorted) // [foo ba b] [b ba foo]
+
+	// sum the lengths of all the strings    
+	totalLen := slices.Reduce(s, func(cnt int, i string) int {
+		return cnt + len(i)
+	})
+	fmt.Println(totalLen) // 6
+
+	// find the first item with length 2
+	str := slices.Find(s, func(item string) bool { return len(item) == 2 })    
+	fmt.Println(str) // ba
+
+
+	// map slice to new slice of different type
+    ints := slices.Map(s, func(item string) int { return len(s) })    
+	fmt.Println(ints) // [3 2 1]
 }
 ```
 

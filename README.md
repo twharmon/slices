@@ -39,10 +39,10 @@ func main() {
 
 ## Benchmarks
 ```
-BenchmarkStdLibShortSort-10    	 1831299	       653.5 ns/op	     112 B/op	       4 allocs/op
-BenchmarkSortShort-10       	 1634320	       732.8 ns/op	       0 B/op	       0 allocs/op
-BenchmarkStdLibSortLong-10     	  366229	      3261 ns/op	     112 B/op	       4 allocs/op
-BenchmarkSortLong-10        	  292084	      4097 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStdLibSortFunc-10    	  743384	      1434 ns/op	    1064 B/op	       8 allocs/op
+BenchmarkSortFuncShort-10     	  612254	      1946 ns/op	    2016 B/op	      12 allocs/op
+BenchmarkStdLibSort-10        	  785678	      1477 ns/op	    1032 B/op	       7 allocs/op
+BenchmarkSortShort-10         	  692116	      1672 ns/op	    2016 B/op	      12 allocs/op
 ```
 
 ## Contribute

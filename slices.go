@@ -21,9 +21,7 @@ func Reverse[T any](s []T) []T {
 }
 
 func Splice[T any](s []T, index int, cnt int, item ...T) []T {
-	tail := s[index:]
-	tail = tail[cnt:]
-	tail = Unshift(tail, item...)
+	tail := Unshift(s[index:][cnt:], item...)
 	s = s[:index]
 	return Concat(s, tail)
 }
@@ -36,14 +34,14 @@ func Unshift[T any](s []T, item ...T) []T {
 	return append(item, s...)
 }
 
-func Find[T any](s []T, f func(item T) bool) (T, bool) {
+func Find[T any](s []T, f func(item T) bool) T {
 	for i := range s {
 		if f(s[i]) {
-			return s[i], true
+			return s[i]
 		}
 	}
 	var t T
-	return t, false
+	return t
 }
 
 func IndexOf[T any](s []T, f func(item T) bool) int {
@@ -66,6 +64,62 @@ func Contains[T Ordered](s []T, item T) bool {
 		}
 	}
 	return false
+}
+
+func Max[T Ordered](s []T) T {
+	if len(s) == 0 {
+		var t T
+		return t
+	}
+	max := s[0]
+	for i := range s {
+		if s[i] > max {
+			max = s[i]
+		}
+	}
+	return max
+}
+
+func Min[T Ordered](s []T) T {
+	if len(s) == 0 {
+		var t T
+		return t
+	}
+	min := s[0]
+	for i := range s {
+		if s[i] < min {
+			min = s[i]
+		}
+	}
+	return min
+}
+
+func MaxFunc[T Ordered](s []T, less func(T, T) bool) T {
+	if len(s) == 0 {
+		var t T
+		return t
+	}
+	max := s[0]
+	for i := range s {
+		if less(max, s[i]) {
+			max = s[i]
+		}
+	}
+	return max
+}
+
+func MinFunc[T Ordered](s []T, less func(T, T) bool) T {
+	if len(s) == 0 {
+		var t T
+		return t
+	}
+	min := s[0]
+	for i := range s {
+		if less(s[i], min) {
+			min = s[i]
+		}
+	}
+	return min
 }
 
 func Every[T any](s []T, f func(item T) bool) bool {

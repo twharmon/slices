@@ -1,5 +1,5 @@
 # Slices
-Utility functions for immutable slices.
+Pure functions for slices.
 
 ![](https://github.com/twharmon/slices/workflows/Test/badge.svg) [![](https://goreportcard.com/badge/github.com/twharmon/slices)](https://goreportcard.com/report/github.com/twharmon/slices) [![](https://gocover.io/_badge/github.com/twharmon/slices)](https://gocover.io/github.com/twharmon/slices)
 

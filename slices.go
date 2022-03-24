@@ -59,6 +59,15 @@ func Some[T any](s []T, f func(item T) bool) bool {
 	return IndexOf(s, f) >= 0
 }
 
+func Contains[T Ordered](s []T, item T) bool {
+	for i := range s {
+		if s[i] == item {
+			return true
+		}
+	}
+	return false
+}
+
 func Every[T any](s []T, f func(item T) bool) bool {
 	for i := range s {
 		if !f(s[i]) {

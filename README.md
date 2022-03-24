@@ -1,8 +1,13 @@
-# Slice
-A simple package that makes working with slices a little bit easier with the help of generics.
+# Slices
+Utility functions for immutable slices.
+
+![](https://github.com/twharmon/slices/workflows/Test/badge.svg) [![](https://goreportcard.com/badge/github.com/twharmon/slices)](https://goreportcard.com/report/github.com/twharmon/slices) [![](https://gocover.io/_badge/github.com/twharmon/slices)](https://gocover.io/github.com/twharmon/slices)
+
+## Documentation
+For full documentation see [pkg.go.dev](https://pkg.go.dev/github.com/twharmon/slices).
 
 ## Install
-`go get github.com/twharmon/slice`
+`go get github.com/twharmon/slices`
 
 ## Example
 ```go
@@ -11,20 +16,20 @@ package main
 import (
 	"fmt"
 	
-	"github.com/twharmon/slice"
+	"github.com/twharmon/slices"
 )
 
 func main() {
-    s := slice.New("foo", "ba")
-    s.Push("b")
-    s.Sort(func(a, b string) bool {
+    s := []string{"foo", "ba"}
+    s = s.Push("b")
+    s.SortFunc(s, func(a, b string) bool {
         // sort by string length, ascending
         return len(a) < len(b)
     })
     fmt.Println(s) // [b ba foo]
 
-    i := slice.New(-3, 4, 2, -8)
-    i.Sort(func(a, b int) bool {
+    i := []int{-3, 4, 2, -8}
+    i = i.SortFunc(i, func(a, b int) bool {
         // sort by asbolute value, ascending
         return a*a < b*b
     })

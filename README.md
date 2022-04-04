@@ -1,7 +1,7 @@
 # Slices
 Pure functions for slices. Slices are never operated on "in place" but new ones are always returned.
 
-![](https://github.com/twharmon/slices/workflows/Test/badge.svg) [![](https://goreportcard.com/badge/github.com/twharmon/slices)](https://goreportcard.com/report/github.com/twharmon/slices) [![](https://gocover.io/_badge/github.com/twharmon/slices)](https://gocover.io/github.com/twharmon/slices)
+![](https://github.com/twharmon/slices/workflows/Test/badge.svg) [![](https://goreportcard.com/badge/github.com/twharmon/slices)](https://goreportcard.com/report/github.com/twharmon/slices) [![codecov](https://codecov.io/gh/twharmon/slices/branch/main/graph/badge.svg?token=K0P59TPRAL)](https://codecov.io/gh/twharmon/slices)
 
 ## Documentation
 For full documentation see [pkg.go.dev](https://pkg.go.dev/github.com/twharmon/slices).

@@ -1,5 +1,5 @@
 # Slices
-Pure functions for slices. Slices are never operated on "in place" but new ones are always returned.
+Pure functions for slices. Slices are never operated on "in place". Instead, new ones are returned.
 
 ![](https://github.com/twharmon/slices/workflows/Test/badge.svg) [![](https://goreportcard.com/badge/github.com/twharmon/slices)](https://goreportcard.com/report/github.com/twharmon/slices) [![codecov](https://codecov.io/gh/twharmon/slices/branch/main/graph/badge.svg?token=K0P59TPRAL)](https://codecov.io/gh/twharmon/slices)
 
@@ -31,7 +31,7 @@ func main() {
 	sorted := slices.SortFunc(s, func(a, b string) bool {
 		return len(a) < len(b)
 	})
-    // original slice is not chaged
+	// original slice is not chaged
 	fmt.Println(s, sorted) // [foo ba b] [b ba foo]
 
 	// sum the lengths of all the strings    
@@ -45,7 +45,7 @@ func main() {
 	fmt.Println(str) // ba
 
 	// map slice to new slice of different type
-    ints := slices.Map(s, func(item string) int { return len(s) })    
+	ints := slices.Map(s, func(item string) int { return len(s) })    
 	fmt.Println(ints) // [3 2 1]
 }
 ```

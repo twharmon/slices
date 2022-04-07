@@ -3,19 +3,19 @@ package slices
 func Clone[T any](s []T) []T {
 	var c []T
 	for i := range s {
-		c = Push(c, s[i])
+		c = Append(c, s[i])
 	}
 	return c
 }
 
-func Push[T any](s []T, item ...T) []T {
+func Append[T any](s []T, item ...T) []T {
 	return append(s, item...)
 }
 
 func Reverse[T any](s []T) []T {
 	var res []T
 	for i := 0; i < len(s); i++ {
-		res = Push(res, s[len(s)-1-i])
+		res = Append(res, s[len(s)-1-i])
 	}
 	return res
 }
@@ -27,7 +27,7 @@ func Splice[T any](s []T, index int, cnt int, item ...T) []T {
 }
 
 func Concat[T any](s []T, other []T) []T {
-	return Push(s, other...)
+	return Append(s, other...)
 }
 
 func Unshift[T any](s []T, item ...T) []T {
@@ -151,7 +151,7 @@ func Filter[T any](s []T, f func(item T) bool) []T {
 	n := make([]T, 0, len(s))
 	for i := range s {
 		if f(s[i]) {
-			n = Push(n, s[i])
+			n = Append(n, s[i])
 		}
 	}
 	return n
@@ -160,7 +160,7 @@ func Filter[T any](s []T, f func(item T) bool) []T {
 func Map[T any, K any](s []T, f func(item T) K) []K {
 	var k []K
 	for i := range s {
-		k = Push(k, f(s[i]))
+		k = Append(k, f(s[i]))
 	}
 	return k
 }

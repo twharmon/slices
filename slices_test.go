@@ -11,7 +11,7 @@ import (
 
 func TestPush(t *testing.T) {
 	s := []int{1}
-	s = slices.Push(s, 5)
+	s = slices.Append(s, 5)
 	want := []int{1, 5}
 	if !reflect.DeepEqual(s, want) {
 		t.Fatalf("want %v; got %v", want, s)

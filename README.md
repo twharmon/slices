@@ -23,10 +23,9 @@ func main() {
 	// use plain go slices
 	s := []string{"foo", "ba"}
 
-	// push new item to end of slice
-	s = slices.Push(s, "b")
+	// append new item to end of slice
+	s = slices.Append(s, "b")
 	fmt.Println(s) // [foo ba b]
-
 	
 	// sort by string length, ascending
 	sorted := slices.SortFunc(s, func(a, b string) bool {
@@ -44,7 +43,6 @@ func main() {
 	// find the first item with length 2
 	str := slices.Find(s, func(item string) bool { return len(item) == 2 })    
 	fmt.Println(str) // ba
-
 
 	// map slice to new slice of different type
     ints := slices.Map(s, func(item string) int { return len(s) })    

@@ -257,6 +257,26 @@ func TestSort(t *testing.T) {
 	}
 }
 
+func TestIntersection(t *testing.T) {
+	a := []string{"foo", "bar"}
+	b := []string{"bar", "baz"}
+	want := []string{"bar"}
+	got := slices.Intersection(a, b)
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
+func TestUnion(t *testing.T) {
+	a := []string{"foo", "bar"}
+	b := []string{"bar", "baz"}
+	want := slices.Sort([]string{"foo", "bar", "baz"})
+	got := slices.Sort(slices.Union(a, b))
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("want %v; got %v", want, got)
+	}
+}
+
 func BenchmarkStdLibSortFunc(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		s := slices.Clone(unsorted)

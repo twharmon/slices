@@ -1,5 +1,6 @@
 package slices
 
+// Clone creates a clone slice and returns it.
 func Clone[T any](s []T) []T {
 	var c []T
 	for i := range s {
@@ -8,10 +9,14 @@ func Clone[T any](s []T) []T {
 	return c
 }
 
+// Append appends an item to the slice and returns the new slice. The
+// given slice is not changed.
 func Append[T any](s []T, item ...T) []T {
 	return append(s, item...)
 }
 
+// Reverse creates a slice that is the reverse of the provided slice
+// and returns it. The given slice is not changed.
 func Reverse[T any](s []T) []T {
 	var res []T
 	for i := 0; i < len(s); i++ {
@@ -20,23 +25,36 @@ func Reverse[T any](s []T) []T {
 	return res
 }
 
+// Splice creates a new slice that is spliced by removing or
+// replacing existing elements and/or adding new elements in place.
+// The given slice is not changed.
 func Splice[T any](s []T, index int, cnt int, item ...T) []T {
 	tail := Unshift(s[index:][cnt:], item...)
 	s = s[:index]
 	return Concat(s, tail)
 }
 
-func Concat[T any](s []T, other []T) []T {
-	return Append(s, other...)
+// Concat combines the contents of all the given slices. The given
+// slices are not changed.
+func Concat[T any](s ...[]T) []T {
+	var output []T
+	for i := range s {
+		output = Append(output, s[i]...)
+	}
+	return output
 }
 
+// Unshift creates a new slice and prepends all the given items and
+// returns it. The given slice is not changed.
 func Unshift[T any](s []T, item ...T) []T {
 	return append(item, s...)
 }
 
-func Find[T any](s []T, f func(item T) bool) T {
+// Find finds an item in the given slice that satisfies the given
+// test function.
+func Find[T any](s []T, test func(item T) bool) T {
 	for i := range s {
-		if f(s[i]) {
+		if test(s[i]) {
 			return s[i]
 		}
 	}
@@ -44,19 +62,25 @@ func Find[T any](s []T, f func(item T) bool) T {
 	return t
 }
 
-func IndexOf[T any](s []T, f func(item T) bool) int {
+// IndexOf finds the index of the first item in the given slice that
+// satisfies the given test function.
+func IndexOf[T any](s []T, test func(item T) bool) int {
 	for i := range s {
-		if f(s[i]) {
+		if test(s[i]) {
 			return i
 		}
 	}
 	return -1
 }
 
-func Some[T any](s []T, f func(item T) bool) bool {
-	return IndexOf(s, f) >= 0
+// Some checks is any of the items in the given slice satisfies the
+// given test function.
+func Some[T any](s []T, test func(item T) bool) bool {
+	return IndexOf(s, test) >= 0
 }
 
+// Contains checks if any of the items in the given slice are equal
+// to the given item.
 func Contains[T Ordered](s []T, item T) bool {
 	for i := range s {
 		if s[i] == item {
@@ -66,6 +90,7 @@ func Contains[T Ordered](s []T, item T) bool {
 	return false
 }
 
+// Max returns the max item in the given slice.
 func Max[T Ordered](s []T) T {
 	if len(s) == 0 {
 		var t T
@@ -80,6 +105,7 @@ func Max[T Ordered](s []T) T {
 	return max
 }
 
+// Min returns the min item in the given slice.
 func Min[T Ordered](s []T) T {
 	if len(s) == 0 {
 		var t T
@@ -94,6 +120,8 @@ func Min[T Ordered](s []T) T {
 	return min
 }
 
+// MaxFunc returns the max item in the given slice according to the
+// given less func.
 func MaxFunc[T Ordered](s []T, less func(T, T) bool) T {
 	if len(s) == 0 {
 		var t T
@@ -108,6 +136,8 @@ func MaxFunc[T Ordered](s []T, less func(T, T) bool) T {
 	return max
 }
 
+// MinFunc returns the min item in the given slice according to the
+// given less func.
 func MinFunc[T Ordered](s []T, less func(T, T) bool) T {
 	if len(s) == 0 {
 		var t T
@@ -122,15 +152,20 @@ func MinFunc[T Ordered](s []T, less func(T, T) bool) T {
 	return min
 }
 
-func Every[T any](s []T, f func(item T) bool) bool {
+// Every checks is every item in the given slice satisfies the
+// given test function.
+func Every[T any](s []T, test func(item T) bool) bool {
 	for i := range s {
-		if !f(s[i]) {
+		if !test(s[i]) {
 			return false
 		}
 	}
 	return true
 }
 
+// SortFunc creates a new slice that is sorted in ascending order
+// according the the given less func and returns it. The given slice
+// is not changed.
 func SortFunc[T any](s []T, less func(a T, b T) bool) []T {
 	c := Clone(s)
 	quickSortFunc(c, 0, len(c)-1, less)
@@ -141,34 +176,73 @@ type Ordered interface {
 	int | int32 | int16 | int8 | int64 | uint | uint32 | uint16 | uint8 | uint64 | float32 | float64 | string
 }
 
+// Sort creates a new slice that is sorted in ascending order. The
+// given slice is not changed.
 func Sort[T Ordered](s []T) []T {
 	c := Clone(s)
 	quickSort(c, 0, len(s)-1)
 	return c
 }
 
-func Filter[T any](s []T, f func(item T) bool) []T {
+// Filter creates a new slice that contains items from the given
+// slice that satisfy the given test function and returns it. The
+// given slice is not changed.
+func Filter[T any](s []T, test func(item T) bool) []T {
 	n := make([]T, 0, len(s))
 	for i := range s {
-		if f(s[i]) {
+		if test(s[i]) {
 			n = Append(n, s[i])
 		}
 	}
 	return n
 }
 
-func Map[T any, K any](s []T, f func(item T) K) []K {
+// Map creates a new slice with items that are mapped to new values
+// according to the given m function. The given slice is not
+// changed.
+func Map[T any, K any](s []T, m func(item T) K) []K {
 	var k []K
 	for i := range s {
-		k = Append(k, f(s[i]))
+		k = Append(k, m(s[i]))
 	}
 	return k
 }
 
+// Reduce iterates through the given slice, reducing the items to a
+// value according to the given reducer function and returns the
+// reduced value. The given slice is not changed.
 func Reduce[T any, K any](s []T, f func(prev K, cur T) K) K {
 	var k K
 	for i := range s {
 		k = f(k, s[i])
 	}
 	return k
+}
+
+// Intersection creates a new slice that contains the intersection of
+// all the given slices. The given slices are not changed.
+func Intersection[T Ordered](s ...[]T) []T {
+	var output []T
+	for i := range s {
+		for j := range s[i] {
+			if !Contains(output, s[i][j]) && Every(s, func(item []T) bool { return Contains(item, s[i][j]) }) {
+				output = Append(output, s[i][j])
+			}
+		}
+	}
+	return output
+}
+
+// Union creates a new slice that contains the union of all the given
+// slices. The given slices are not changed.
+func Union[T Ordered](s ...[]T) []T {
+	var output []T
+	for i := range s {
+		for j := range s[i] {
+			if !Contains(output, s[i][j]) {
+				output = Append(output, s[i][j])
+			}
+		}
+	}
+	return output
 }

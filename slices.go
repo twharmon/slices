@@ -4,7 +4,7 @@ package slices
 func Clone[T any](s []T) []T {
 	var c []T
 	for i := range s {
-		c = Append(c, s[i])
+		c = append(c, s[i])
 	}
 	return c
 }
@@ -12,7 +12,7 @@ func Clone[T any](s []T) []T {
 // Append appends an item to the slice and returns the new slice. The
 // given slice is not changed.
 func Append[T any](s []T, item ...T) []T {
-	return append(s, item...)
+	return append(Clone(s), item...)
 }
 
 // Reverse creates a slice that is the reverse of the provided slice

@@ -232,43 +232,19 @@ func Intersection[T Ordered](s ...[]T) []T {
 		return []T{}
 	}
 
-	output := make([]T, 0, len(s[0]))
-	for i := range s {
-		for j := range s[i] {
-			if !Contains(output, s[i][j]) && Every(s, func(item []T) bool { return Contains(item, s[i][j]) }) {
-				output = append(output, s[i][j])
-			}
-		}
-	}
-	return output
-}
-
-// Intersection creates a new slice that contains the intersection of
-// all the given slices using hash algorithm. The given slices are not changed.
-func IntersectionHash[T Ordered](s ...[]T) []T {
-	if len(s) == 0 {
-		return []T{}
-	}
-
-	mapLen := 0
-	for i := range s {
-		mapLen += len(s[i])
-	}
-
-	hash := make(map[T]int16, mapLen)
+	hash := make(map[T]int)
 
 	for i := range s {
 		for j := range s[i] {
-			c := hash[s[i][j]]
-			if c <= int16(i) {
-				hash[s[i][j]] = c + 1
+			if hash[s[i][j]] == i {
+				hash[s[i][j]]++
 			}
 		}
 	}
 
-	result := make([]T, 0, len(s[0]))
+	result := make([]T, 0, len(hash))
 	for k := range hash {
-		if hash[k] >= int16(len(s)) {
+		if hash[k] == len(s) {
 			result = append(result, k)
 		}
 	}

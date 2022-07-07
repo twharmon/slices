@@ -698,17 +698,17 @@ func TestBenchmarkPureFuncs(t *testing.T) {
 		assertEqual(t, gotInt64Lib, gotInt64Pure)
 	})
 
-	// t.Run("intersect", func(t *testing.T) {
-	// 	i0 := slices.Clone(unsortedInt64)
-	// 	i1 := []int64{1, 3, 79, 72, 27, 57, 5, 4, 30, 61, 60, 9, 67, 40}
-	// 	i2 := []int64{12, 75, 74, 54, 34, 32, 23, 43, 68}
+	t.Run("intersect", func(t *testing.T) {
+		i0 := slices.Map(unsortedInt64, func(item int64) int { return int(item) })
+		i1 := []int{1, 3, 79, 72, 27, 57, 5, 4, 30, 61, 60, 9, 67, 40}
+		i2 := []int{12, 75, 74, 54, 34, 32, 23, 43, 68}
 
-	// 	gotInt64Pure := slices.Sort(intersectInt64Pure(i0, i1, i2))
+		gotInt64Pure := slices.Sort(intersectIntPure(i0, i1, i2))
 
-	// 	gotInt64Lib := slices.Sort(slices.Intersection(i0, i1, i2))
+		gotInt64Lib := slices.Sort(slices.Intersection(i0, i1, i2))
 
-	// 	assertEqual(t, gotInt64Lib, gotInt64Pure)
-	// })
+		assertEqual(t, gotInt64Lib, gotInt64Pure)
+	})
 
 }
 

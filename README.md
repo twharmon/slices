@@ -52,7 +52,6 @@ func main() {
 
 ## Benchmarks
 Benchmarks are compared with the same methods written using pure go.  
-The results for MacBook Air M1, MacOS 12.0.1, Go 1.18.1 are:
 ```
 goos: darwin
 goarch: arm64

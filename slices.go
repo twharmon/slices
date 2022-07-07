@@ -2,9 +2,9 @@ package slices
 
 // Clone creates a clone slice and returns it.
 func Clone[T any](s []T) []T {
-	var c []T
+	c := make([]T, len(s))
 	for i := range s {
-		c = append(c, s[i])
+		c[i] = s[i]
 	}
 	return c
 }
@@ -18,9 +18,9 @@ func Append[T any](s []T, item ...T) []T {
 // Reverse creates a slice that is the reverse of the provided slice
 // and returns it. The given slice is not changed.
 func Reverse[T any](s []T) []T {
-	var res []T
+	res := make([]T, len(s))
 	for i := 0; i < len(s); i++ {
-		res = Append(res, s[len(s)-1-i])
+		res[i] = s[len(s)-1-i]
 	}
 	return res
 }
@@ -37,10 +37,16 @@ func Splice[T any](s []T, index int, cnt int, item ...T) []T {
 // Concat combines the contents of all the given slices. The given
 // slices are not changed.
 func Concat[T any](s ...[]T) []T {
-	var output []T
+	totalLen := 0
 	for i := range s {
-		output = Append(output, s[i]...)
+		totalLen += len(s[i])
 	}
+
+	output := make([]T, 0, totalLen)
+	for i := range s {
+		output = append(output, s[i]...)
+	}
+
 	return output
 }
 
@@ -191,7 +197,7 @@ func Filter[T any](s []T, test func(item T) bool) []T {
 	n := make([]T, 0, len(s))
 	for i := range s {
 		if test(s[i]) {
-			n = Append(n, s[i])
+			n = append(n, s[i])
 		}
 	}
 	return n
@@ -201,9 +207,9 @@ func Filter[T any](s []T, test func(item T) bool) []T {
 // according to the given m function. The given slice is not
 // changed.
 func Map[T any, K any](s []T, m func(item T) K) []K {
-	var k []K
+	k := make([]K, len(s))
 	for i := range s {
-		k = Append(k, m(s[i]))
+		k[i] = m(s[i])
 	}
 	return k
 }
@@ -222,15 +228,28 @@ func Reduce[T any, K any](s []T, f func(prev K, cur T) K) K {
 // Intersection creates a new slice that contains the intersection of
 // all the given slices. The given slices are not changed.
 func Intersection[T Ordered](s ...[]T) []T {
-	var output []T
+	if len(s) == 0 {
+		return []T{}
+	}
+
+	hash := make(map[T]int)
+
 	for i := range s {
 		for j := range s[i] {
-			if !Contains(output, s[i][j]) && Every(s, func(item []T) bool { return Contains(item, s[i][j]) }) {
-				output = Append(output, s[i][j])
+			if hash[s[i][j]] == i {
+				hash[s[i][j]]++
 			}
 		}
 	}
-	return output
+
+	result := make([]T, 0, len(hash))
+	for k := range hash {
+		if hash[k] == len(s) {
+			result = append(result, k)
+		}
+	}
+
+	return result
 }
 
 // Union creates a new slice that contains the union of all the given
@@ -240,7 +259,7 @@ func Union[T Ordered](s ...[]T) []T {
 	for i := range s {
 		for j := range s[i] {
 			if !Contains(output, s[i][j]) {
-				output = Append(output, s[i][j])
+				output = append(output, s[i][j])
 			}
 		}
 	}

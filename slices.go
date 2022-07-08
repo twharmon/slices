@@ -1,5 +1,9 @@
 package slices
 
+type Ordered interface {
+	int | int32 | int16 | int8 | int64 | uint | uint32 | uint16 | uint8 | uint64 | float32 | float64 | string
+}
+
 // Clone creates a clone slice and returns it.
 func Clone[T any](s []T) []T {
 	c := make([]T, len(s))
@@ -70,7 +74,18 @@ func Find[T any](s []T, test func(item T) bool) T {
 
 // IndexOf finds the index of the first item in the given slice that
 // satisfies the given test function.
-func IndexOf[T any](s []T, test func(item T) bool) int {
+func IndexOf[T Ordered](s []T, item T) int {
+	for i := range s {
+		if s[i] == item {
+			return i
+		}
+	}
+	return -1
+}
+
+// IndexOfFunc finds the index of the first item in the given slice
+// that satisfies the given test function.
+func IndexOfFunc[T any](s []T, test func(item T) bool) int {
 	for i := range s {
 		if test(s[i]) {
 			return i
@@ -82,7 +97,7 @@ func IndexOf[T any](s []T, test func(item T) bool) int {
 // Some checks is any of the items in the given slice satisfies the
 // given test function.
 func Some[T any](s []T, test func(item T) bool) bool {
-	return IndexOf(s, test) >= 0
+	return IndexOfFunc(s, test) >= 0
 }
 
 // Contains checks if any of the items in the given slice are equal
@@ -128,7 +143,7 @@ func Min[T Ordered](s []T) T {
 
 // MaxFunc returns the max item in the given slice according to the
 // given less func.
-func MaxFunc[T Ordered](s []T, less func(T, T) bool) T {
+func MaxFunc[T any](s []T, less func(T, T) bool) T {
 	if len(s) == 0 {
 		var t T
 		return t
@@ -144,7 +159,7 @@ func MaxFunc[T Ordered](s []T, less func(T, T) bool) T {
 
 // MinFunc returns the min item in the given slice according to the
 // given less func.
-func MinFunc[T Ordered](s []T, less func(T, T) bool) T {
+func MinFunc[T any](s []T, less func(T, T) bool) T {
 	if len(s) == 0 {
 		var t T
 		return t
@@ -176,10 +191,6 @@ func SortFunc[T any](s []T, less func(a T, b T) bool) []T {
 	c := Clone(s)
 	quickSortFunc(c, 0, len(c)-1, less)
 	return c
-}
-
-type Ordered interface {
-	int | int32 | int16 | int8 | int64 | uint | uint32 | uint16 | uint8 | uint64 | float32 | float64 | string
 }
 
 // Sort creates a new slice that is sorted in ascending order. The
@@ -231,9 +242,7 @@ func Intersection[T Ordered](s ...[]T) []T {
 	if len(s) == 0 {
 		return []T{}
 	}
-
 	hash := make(map[T]int)
-
 	for i := range s {
 		for j := range s[i] {
 			if hash[s[i][j]] == i {
@@ -241,27 +250,32 @@ func Intersection[T Ordered](s ...[]T) []T {
 			}
 		}
 	}
-
 	result := make([]T, 0, len(hash))
 	for k := range hash {
 		if hash[k] == len(s) {
 			result = append(result, k)
 		}
 	}
-
 	return result
 }
 
 // Union creates a new slice that contains the union of all the given
 // slices. The given slices are not changed.
 func Union[T Ordered](s ...[]T) []T {
-	var output []T
+	if len(s) == 0 {
+		return []T{}
+	}
+	hash := make(map[T]struct{})
 	for i := range s {
 		for j := range s[i] {
-			if !Contains(output, s[i][j]) {
-				output = append(output, s[i][j])
-			}
+			hash[s[i][j]] = struct{}{}
 		}
+	}
+	output := make([]T, len(hash))
+	i := 0
+	for k := range hash {
+		output[i] = k
+		i++
 	}
 	return output
 }

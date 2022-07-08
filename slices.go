@@ -237,7 +237,8 @@ func Reduce[T any, K any](s []T, f func(prev K, cur T) K) K {
 }
 
 // Intersection creates a new slice that contains the intersection of
-// all the given slices. The given slices are not changed.
+// all the given slices. The given slices are not changed. All items
+// in the returned slice are distinct.
 func Intersection[T Ordered](s ...[]T) []T {
 	if len(s) == 0 {
 		return []T{}
@@ -260,7 +261,8 @@ func Intersection[T Ordered](s ...[]T) []T {
 }
 
 // Union creates a new slice that contains the union of all the given
-// slices. The given slices are not changed.
+// slices. The given slices are not changed. All items in the
+// returned slice are distinct.
 func Union[T Ordered](s ...[]T) []T {
 	if len(s) == 0 {
 		return []T{}
@@ -270,6 +272,25 @@ func Union[T Ordered](s ...[]T) []T {
 		for j := range s[i] {
 			hash[s[i][j]] = struct{}{}
 		}
+	}
+	output := make([]T, len(hash))
+	i := 0
+	for k := range hash {
+		output[i] = k
+		i++
+	}
+	return output
+}
+
+// Distinct creates a new slice that contains all of the distinct
+// items from the given slices without duplicates.
+func Distinct[T Ordered](s []T) []T {
+	if len(s) == 0 {
+		return []T{}
+	}
+	hash := make(map[T]struct{})
+	for i := range s {
+		hash[s[i]] = struct{}{}
 	}
 	output := make([]T, len(hash))
 	i := 0

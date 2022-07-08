@@ -65,10 +65,15 @@ func BenchmarkFilter(b *testing.B) {
 	filterFunc := func(v string) bool {
 		return len(v) > 5
 	}
-	s := slices.Clone(unsortedStringSlice)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = slices.Filter(s, filterFunc)
+		_ = slices.Filter(unsortedStringSlice, filterFunc)
+	}
+}
+
+func BenchmarkDistinct(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = slices.Distinct(unsortedStringSlice)
 	}
 }
 

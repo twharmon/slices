@@ -51,54 +51,29 @@ func main() {
 ```
 
 ## Benchmarks
-Benchmarks are compared with the same methods written using pure go.  
 ```
 goos: darwin
 goarch: arm64
 pkg: github.com/twharmon/slices
-BenchmarkStdLibSortFunc-10    	  119398	      9323 ns/op	    4152 B/op	       3 allocs/op
-BenchmarkSortFuncShort-10     	   94508	     12153 ns/op	    8192 B/op	       2 allocs/op
-BenchmarkStdLibSort-10        	  126046	      9241 ns/op	    4120 B/op	       2 allocs/op
-BenchmarkSortShort-10         	  115418	     10242 ns/op	    8192 B/op	       2 allocs/op
 
-BenchmarkReverse/strings_237_pure-10         	 1947543	       650.8 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkReverse/strings_237-10              	 1653981	       740.0 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkReverse/strings_7584_pure-10        	   66444	     18537 ns/op	  122880 B/op	       1 allocs/op
-BenchmarkReverse/strings_7584-10             	   44816	     26791 ns/op	  122880 B/op	       1 allocs/op
-BenchmarkReverse/int64_488_pure-10           	 1934253	       621.5 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkReverse/int64_488-10                	 1994956	       590.0 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkSortFunc/std_lib-10         	  116497	      9424 ns/op	    4152 B/op	       3 allocs/op
+BenchmarkSortFunc/slices-10          	  101791	     11479 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkSort/std_lib-10             	  125790	      9441 ns/op	    4120 B/op	       2 allocs/op
+BenchmarkSort/slices-10              	  113931	     10162 ns/op	    4096 B/op	       1 allocs/op
 
-BenchmarkConcat/strings_6x237_pure-10        	  428758	      2576 ns/op	   24576 B/op	       1 allocs/op
-BenchmarkConcat/strings_6x237-10             	  489048	      2506 ns/op	   24576 B/op	       1 allocs/op
-BenchmarkConcat/int64_6x488_pure-10          	  696577	      1754 ns/op	   24576 B/op	       1 allocs/op
-BenchmarkConcat/int64_6x488-10               	  678524	      1750 ns/op	   24576 B/op	       1 allocs/op
+BenchmarkReverse-10                  	 1631348	       749.4 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkConcat-10                   	  275463	      4259 ns/op	   40960 B/op	       1 allocs/op
+BenchmarkFilter-10                   	 1000000	      1018 ns/op	    4096 B/op	       1 allocs/op
 
-BenchmarkFilter/strings_237_(len>5)_pure-10  	 1283282	       931.6 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkFilter/strings_237_(len>5)-10       	 1274114	       987.7 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkFilter/int64_488_(val>40)_pure-10   	  867286	      1447 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkFilter/int64_488_(val>40)-10        	  783907	      1519 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkUnion/2x20-10               	 3258876	       361.2 ns/op	      32 B/op	       1 allocs/op
+BenchmarkUnion/20x2-10               	  502176	      2329 ns/op	    1592 B/op	       3 allocs/op
+BenchmarkUnion/20x2000-10            	    1140	   1054108 ns/op	    1590 B/op	       3 allocs/op
+BenchmarkUnion/2000x20-10            	     714	   1697117 ns/op	  142481 B/op	      39 allocs/op
 
-BenchmarkMap/strings_237_replace_a_b_pure-10 	  225678	      5187 ns/op	    4768 B/op	      99 allocs/op
-BenchmarkMap/strings_237_replace_a_b-10      	  225409	      5269 ns/op	    4768 B/op	      99 allocs/op
-BenchmarkMap/int64_237_*5_pure-10            	 1443272	       841.6 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkMap/int64_237_*5-10                 	 1390299	       850.0 ns/op	    4096 B/op	       1 allocs/op
-
-BenchmarkIntersect/int_10x10_pure-sm-result-10         	  692601	      1709 ns/op	      80 B/op	       1 allocs/op
-BenchmarkIntersect/int_10x10_pkg-sm-result-10          	 1338831	       894.7 ns/op	     112 B/op	       3 allocs/op
-BenchmarkIntersect/int_10x10_pure-lg-result-10         	 8502908	       141.3 ns/op	      80 B/op	       1 allocs/op
-BenchmarkIntersect/int_10x10_pkg-lg-result-10          	 2866723	       412.4 ns/op	      56 B/op	       3 allocs/op
-BenchmarkIntersect/int_10x100_pure-sm-result-10        	   83098	     14213 ns/op	      80 B/op	       1 allocs/op
-BenchmarkIntersect/int_10x100_pkg-sm-result-10         	  191071	      5585 ns/op	      96 B/op	       3 allocs/op
-BenchmarkIntersect/int_10x100_pure-lg-result-10        	 1000000	      1181 ns/op	      80 B/op	       1 allocs/op
-BenchmarkIntersect/int_10x100_pkg-lg-result-10         	  367261	      3262 ns/op	      56 B/op	       3 allocs/op
-BenchmarkIntersect/int_100x10000_pure-sm-result-10     	      16	  67781260 ns/op	     896 B/op	       1 allocs/op
-BenchmarkIntersect/int_100x10000_pkg-sm-result-10      	      76	  15645106 ns/op	    5719 B/op	      13 allocs/op
-BenchmarkIntersect/int_100x10000_pure-lg-result-10     	       1	3796862833 ns/op	     896 B/op	       1 allocs/op
-BenchmarkIntersect/int_100x10000_pkg-lg-result-10      	      58	  19518427 ns/op	     416 B/op	       4 allocs/op
-BenchmarkIntersect/int_10000x100_pure-sm-result-10     	       1	5512020125 ns/op	   81920 B/op	       1 allocs/op
-BenchmarkIntersect/int_10000x100_pkg-sm-result-10      	      67	  17902264 ns/op	  413049 B/op	     203 allocs/op
-BenchmarkIntersect/int_10000x100_pure-lg-result-10     	       4	 282252500 ns/op	   81920 B/op	       1 allocs/op
-BenchmarkIntersect/int_10000x100_pkg-lg-result-10      	      67	  17784601 ns/op	   91609 B/op	      37 allocs/op
+BenchmarkIntersection/2x20-10        	 2380771	       498.0 ns/op	      48 B/op	       1 allocs/op
+BenchmarkIntersection/20x2-10        	  821226	      1427 ns/op	    1196 B/op	       3 allocs/op
+BenchmarkIntersection/20x2000-10     	    1178	   1020620 ns/op	    1282 B/op	       3 allocs/op
+BenchmarkIntersection/2000x20-10     	     938	   1276258 ns/op	  203294 B/op	      58 allocs/op
 ```
 
 ## Contribute

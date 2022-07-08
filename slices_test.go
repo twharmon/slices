@@ -18,18 +18,18 @@ func TestPush(t *testing.T) {
 	assertEqual(t, got, want)
 }
 
-func TestContainsTrue(t *testing.T) {
+func TestContains(t *testing.T) {
 	s := []int{1, 2, 3}
-	got := slices.Contains(s, 2)
-	want := true
-	assertEqual(t, got, want)
-}
-
-func TestContainsFalse(t *testing.T) {
-	s := []int{1, 2, 3}
-	got := slices.Contains(s, 4)
-	want := false
-	assertEqual(t, got, want)
+	t.Run("true", func(t *testing.T) {
+		got := slices.Contains(s, 2)
+		want := true
+		assertEqual(t, got, want)
+	})
+	t.Run("false", func(t *testing.T) {
+		got := slices.Contains(s, 4)
+		want := false
+		assertEqual(t, got, want)
+	})
 }
 
 func TestSpliceNoInserts(t *testing.T) {
